@@ -1,13 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const { connect } = require('./db');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.use('/notes', require('./routes/notes'));
-app.get('/', (req, res) => res.send('hello'));
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log('listening on ' + PORT));
+connect().then(() => app.listen(PORT, () => console.log('listening on ' + PORT)));
