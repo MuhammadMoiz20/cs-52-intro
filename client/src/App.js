@@ -1,60 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import api from './api';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Notes from './pages/Notes';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 export default function App() {
-  const [notes, setNotes] = useState([]);
-  const [text, setText] = useState('');
-  const [editing, setEditing] = useState(null);
-  const [editText, setEditText] = useState('');
-
-  function load() { api.get('/notes').then(r => setNotes(r.data)).catch(() => {}); }
-  useEffect(load, []);
-
-  async function add(e) {
-    e.preventDefault();
-    if (!text.trim()) return;
-    await api.post('/notes', { text });
-    setText('');
-    load();
-  }
-
-  async function del(id) {
-    await api.delete('/notes/' + id);
-    load();
-  }
-
-  async function save(id) {
-    await api.put('/notes/' + id, { text: editText });
-    setEditing(null);
-    load();
-  }
-
   return (
-    <div>
-      <h1>notes</h1>
-      <form onSubmit={add}>
-        <input value={text} onChange={e => setText(e.target.value)} placeholder="new note" />
-        <button>add</button>
-      </form>
-      <ul>
-        {notes.map(n => (
-          <li key={n._id}>
-            {editing === n._id ? (
-              <>
-                <input value={editText} onChange={e => setEditText(e.target.value)} />
-                <button onClick={() => save(n._id)}>save</button>
-                <button onClick={() => setEditing(null)}>cancel</button>
-              </>
-            ) : (
-              <>
-                {n.text}
-                <button onClick={() => { setEditing(n._id); setEditText(n.text); }}>edit</button>
-                <button onClick={() => del(n._id)}>x</button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <BrowserRouter>
+      <nav>
+        <Link to="/">notes</Link> | <Link to="/login">login</Link> | <Link to="/register">register</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Notes />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
