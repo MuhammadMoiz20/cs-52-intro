@@ -4,6 +4,8 @@ import api from './api';
 export default function App() {
   const [notes, setNotes] = useState([]);
   const [text, setText] = useState('');
+  const [editing, setEditing] = useState(null);
+  const [editText, setEditText] = useState('');
 
   function load() { api.get('/notes').then(r => setNotes(r.data)).catch(() => {}); }
   useEffect(load, []);
@@ -16,6 +18,17 @@ export default function App() {
     load();
   }
 
+  async function del(id) {
+    await api.delete('/notes/' + id);
+    load();
+  }
+
+  async function save(id) {
+    await api.put('/notes/' + id, { text: editText });
+    setEditing(null);
+    load();
+  }
+
   return (
     <div>
       <h1>notes</h1>
@@ -24,7 +37,23 @@ export default function App() {
         <button>add</button>
       </form>
       <ul>
-        {notes.map(n => <li key={n._id}>{n.text}</li>)}
+        {notes.map(n => (
+          <li key={n._id}>
+            {editing === n._id ? (
+              <>
+                <input value={editText} onChange={e => setEditText(e.target.value)} />
+                <button onClick={() => save(n._id)}>save</button>
+                <button onClick={() => setEditing(null)}>cancel</button>
+              </>
+            ) : (
+              <>
+                {n.text}
+                <button onClick={() => { setEditing(n._id); setEditText(n.text); }}>edit</button>
+                <button onClick={() => del(n._id)}>x</button>
+              </>
+            )}
+          </li>
+        ))}
       </ul>
     </div>
   );
