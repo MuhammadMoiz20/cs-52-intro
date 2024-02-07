@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import api from './api';
 
 export default function Notes() {
+  const nav = useNavigate();
+  function logout() { localStorage.removeItem('token'); nav('/login'); }
   const [notes, setNotes] = useState([]);
   const [text, setText] = useState('');
   const [editing, setEditing] = useState(null);
@@ -32,6 +34,7 @@ export default function Notes() {
   return (
     <div>
       <h1>notes</h1>
+      <button onClick={logout}>logout</button>
       <form onSubmit={add}>
         <input value={text} onChange={e => setText(e.target.value)} placeholder="new note" />
         <button>add</button>
