@@ -1,0 +1,16 @@
+body {
+  font-family: -apple-system, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  color: #222;
+}
+nav { padding: 10px 0; }
+nav a { margin-right: 10px; color: #06c; text-decoration: none; }
+h1 { font-size: 24px; }
+form { display: flex; gap: 6px; margin-bottom: 12px; }
+input { padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; }
+button { padding: 6px 10px; border: 1px solid #ccc; background: white; border-radius: 4px; cursor: pointer; }
+button:hover { background: #eee; }
+ul { list-style: none; padding: 0; }
+li { background: white; padding: 8px 12px; margin-bottom: 6px; border-radius: 4px; display: flex; gap: 8px; align-items: center; }
