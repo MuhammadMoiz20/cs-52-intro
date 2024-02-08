@@ -5,11 +5,12 @@ export default function Notes() {
   const nav = useNavigate();
   function logout() { localStorage.removeItem('token'); nav('/login'); }
   const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [text, setText] = useState('');
   const [editing, setEditing] = useState(null);
   const [editText, setEditText] = useState('');
 
-  function load() { api.get('/notes').then(r => setNotes(r.data)).catch(() => {}); }
+  function load() { setLoading(true); api.get('/notes').then(r => setNotes(r.data)).catch(() => {}).finally(() => setLoading(false)); }
   useEffect(load, []);
 
   async function add(e) {
@@ -39,6 +40,7 @@ export default function Notes() {
         <input value={text} onChange={e => setText(e.target.value)} placeholder="new note" />
         <button>add</button>
       </form>
+      {loading && <p>loading...</p>}
       <ul>
         {notes.map(n => (
           <li key={n._id}>
