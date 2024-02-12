@@ -1,3 +1,17 @@
 # cs52 notes app
 
-full stack notes thing for class
+simple notes app for cs52. backend in express, frontend in react, mongo for storage.
+
+## run
+
+```
+make install
+make dev
+```
+
+needs mongodb running locally. copy `.env.example` to `.env` in both dirs.
+
+## stack
+- express + mongoose
+- react + react-router
+- jwt auth
