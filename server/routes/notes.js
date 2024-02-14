@@ -5,7 +5,12 @@ const auth = require('../middleware/auth');
 router.use(auth);
 
 router.get('/', async (req, res) => {
-  const notes = await Note.find({ user: req.userId }).sort({ createdAt: -1 });
+  const page = parseInt(req.query.page || '1', 10);
+  const limit = 20;
+  const notes = await Note.find({ user: req.userId })
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
   res.json(notes);
 });
 
