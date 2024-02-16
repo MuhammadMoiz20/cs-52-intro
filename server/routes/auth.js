@@ -1,4 +1,6 @@
+const rateLimit = require('../middleware/ratelimit');
 const router = require('express').Router();
+router.use(rateLimit(5, 60_000));
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
