@@ -6,8 +6,11 @@ router.use(auth);
 
 router.get('/', async (req, res) => {
   const page = parseInt(req.query.page || '1', 10);
+  const q = req.query.q;
   const limit = 20;
-  const notes = await Note.find({ user: req.userId })
+  const filter = { user: req.userId };
+  if (q) filter.text = { $regex: q, $options: 'i' };
+  const notes = await Note.find(filter)
     .sort({ createdAt: -1 })
     .skip((page - 1) * limit)
     .limit(limit);
