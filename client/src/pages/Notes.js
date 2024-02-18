@@ -8,10 +8,11 @@ export default function Notes() {
   const [loading, setLoading] = useState(true);
   const [text, setText] = useState('');
   const [editing, setEditing] = useState(null);
+  const [q, setQ] = useState('');
   const [editText, setEditText] = useState('');
 
-  function load() { setLoading(true); api.get('/notes').then(r => setNotes(r.data)).catch(() => {}).finally(() => setLoading(false)); }
-  useEffect(load, []);
+  function load() { setLoading(true); api.get('/notes', { params: q ? { q } : {} }).then(r => setNotes(r.data)).catch(() => {}).finally(() => setLoading(false)); }
+  useEffect(load, [q]);
 
   async function add(e) {
     e.preventDefault();
@@ -36,6 +37,7 @@ export default function Notes() {
     <div>
       <h1>notes</h1>
       <button onClick={logout}>logout</button>
+      <input placeholder="search" value={q} onChange={e => setQ(e.target.value)} style={{marginBottom:8}} />
       <form onSubmit={add}>
         <input value={text} onChange={e => setText(e.target.value)} placeholder="new note" />
         <button>add</button>
