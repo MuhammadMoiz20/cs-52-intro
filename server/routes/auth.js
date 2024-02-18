@@ -10,6 +10,7 @@ const SECRET = process.env.JWT_SECRET || 'devsecret';
 router.post('/register', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'missing' });
+  if (password.length < 6) return res.status(400).json({ error: 'password too short' });
   const exists = await User.findOne({ email });
   if (exists) return res.status(400).json({ error: 'email taken' });
   const passwordHash = await bcrypt.hash(password, 10);
