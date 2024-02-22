@@ -15,3 +15,14 @@ needs mongodb running locally. copy `.env.example` to `.env` in both dirs.
 - express + mongoose
 - react + react-router
 - jwt auth
+- bcrypt for password hashing
+
+## features
+- register / login
+- create / edit / delete notes
+- search
+- pagination
+- per-user notes only
+
+## deploy
+see DEPLOY.md
